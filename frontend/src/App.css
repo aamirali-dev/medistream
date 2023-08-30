@@ -1,0 +1,143 @@
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Quando&display=swap");
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+a {
+  color: black;
+  text-decoration: none;
+}
+
+.logo {
+  width: 150px;
+}
+
+.page-heading {
+  font-family: "Quando", serif;
+  font-size: 40px;
+  text-align: center;
+  margin: 20px auto 40px auto;
+}
+
+.error {
+  color: red;
+  margin: 0px auto 20px auto;
+  font-size: 13px;
+}
+
+.message{
+  font-size: 18px;
+  text-align: center;
+  margin:30px auto;
+}
+
+nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 15px 70px;
+  box-shadow: rgba(0, 0, 0, 0.05) 0px 0px 0px 1px;
+}
+
+nav img {
+  width: 120px;
+}
+
+.tabs {
+  background-color: rgb(235, 234, 234);
+  border-radius: 50px;
+}
+
+.tabs ul {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.tabs li {
+  padding: 5px 10px;
+  list-style-type: none;
+}
+
+.tabs ul li button {
+  border: none;
+  background-color: transparent;
+  font-size: 14px;
+  font-family: "poppins";
+  cursor: pointer;
+}
+
+.tabs ul li:hover {
+  background-color: #00ffb363;
+  border-radius: 50px;
+}
+
+.active {
+  background-color: #00ffb2 !important;
+  border-radius: 50px;
+  color: white;
+  cursor: pointer;
+  transition: background-color 1s ease-in-out;
+}
+
+.patient-table-container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.patient-table{
+  width: 70%;
+  text-align: center;
+  font-family: "Quando", serif;
+  border-collapse:collapse;
+}
+.patient-table th{
+  padding:20px 0px;
+}
+
+.patient-table tr td,.patient-table tr th{
+  padding:10px 20px;
+}
+
+.patient-table tr:nth-child(odd){
+  background-color: rgb(245, 244, 244);
+}
+
+
+.patient-table tr:hover{
+  background-color: rgb(233, 233, 233);
+  cursor: pointer;
+}
+
+.search-container{
+  width: 70%;
+  margin:10px auto 40px auto;
+  margin:10px auto 40px auto;
+}
+.search-div{
+  display: flex;
+  gap:10px;
+  align-items: center;
+}
+
+.search-div button{
+  height: 55px;
+  width:50px;
+  background:none;
+  border:1px solid rgb(196,196,196);
+  border-radius: 5px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.search-div button:hover{
+  background-color: rgb(240, 240, 240);
+}

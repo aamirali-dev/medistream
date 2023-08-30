@@ -1,0 +1,89 @@
+
+:root{
+    --orange:#00FFB2;
+}
+.home-container{
+    background-color: rgb(245,245,245,1);
+    width:100vw;
+    height: 100vh;
+    padding:40px 100px;
+}
+
+.home-content{
+    margin:80px auto auto auto;
+    color:#3F4144;
+}
+
+
+.home-title{
+    font-size: 80px;
+    font-family:'Montserrat', sans-serif;
+    margin:20px auto;
+}
+
+.home-description{
+    font-size: 20px;
+    font-family:'Quando', serif;
+    width:700px;
+}
+
+
+
+.left-div, .right-div{
+    height: 100%;
+}
+
+.left-div{
+    width: 60%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap:50px;
+}
+
+.right-div{
+    width: 40%;
+    background-color:var(--orange);
+}
+
+.home-page-title{
+    font-size: 40px;
+    margin:10px 50px;
+    font-weight: 600;
+    /* color: rgb(0, 174, 255); */
+}
+.logo-container{
+    position: absolute;
+    top:20px;
+    left:0px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width:60%;
+}
+
+
+.home-buttons-container{
+    width:100%;
+    display: flex;
+    justify-content: flex-start;
+    gap:30px;
+    margin:40px auto;
+}
+
+.home-button{
+    background-color: white;
+    padding:10px 40px;
+    font-size: 20px;
+    border: 2px solid var(--orange);
+    cursor: pointer;
+    transition: background-color 1s ease-in-out;
+}
+
+.home-button:hover{
+    background-color: var(--orange);
+    /* color: white; */
+    transition: background-color 1s ease-in-out;
+}
+

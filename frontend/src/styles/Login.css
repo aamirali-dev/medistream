@@ -1,0 +1,20 @@
+
+
+
+.login-container{
+    display: flex;
+    flex-direction: column;
+    width:25%;
+    margin:auto;
+    height: 100%;
+}
+
+.login-container form{
+    margin: 30px auto;
+}
+
+.forget-passwd{
+    margin:10px auto 20px auto;
+    color:#014b38;
+    font-size: 14px;
+}
