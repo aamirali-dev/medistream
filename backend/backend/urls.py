@@ -21,5 +21,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('auth/', include('djoser.urls')),
     path('auth/', include('djoser.urls.jwt')),
-    path('api/',include('summarize.urls'))
+    # path('api/',include('summarize.urls')),
+    path('api/', include('datalake.urls')),
 ]
