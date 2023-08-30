@@ -43,7 +43,7 @@ class ListDiagnosis(ListAPIView):
 class ListPatients(ListAPIView):
     filter_backends = [DjangoFilterBackend, SearchFilter]
     search_fields = ['patient_first_name']
-    queryset = Demographicsview.objects.using('primary') \
+    queryset = Demographicsview.objects \
     .only('patientid', 'gender', 'age_in_years', ) \
     .annotate(patient_first_name=F('diagnosis__patient_first_name')) \
     .annotate(dcount=Count('diagnosis__patient_first_name')) \

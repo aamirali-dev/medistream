@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'corsheaders',
     'djoser',
+    'debug_toolbar',
     'summarize',
     'datalake'
 ]
@@ -56,6 +57,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
 
 ]
 
@@ -79,6 +81,13 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'backend.wsgi.application'
 
+INTERNAL_IPS = [
+    # ...
+    "127.0.0.1",
+    # ...
+]
+
+DATABASE_ROUTERS = ['datalake.routers.LakeRouter', 'backend.routers.DefaultRouter']
 
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
@@ -92,7 +101,7 @@ DATABASES = {
         'HOST': 'localhost',
         'PORT': '3306',
     },
-    'primary': {
+    'datalake': {
         'ENGINE': 'mssql',
         'NAME': 'One Practice Sample',
         'HOST': 'CMDLHRDB01',
