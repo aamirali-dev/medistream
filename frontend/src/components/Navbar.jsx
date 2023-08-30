@@ -5,11 +5,9 @@ import { Link, useNavigate } from 'react-router-dom'
 const Navbar = () => {
     const navigate = useNavigate()
     const [page, setPage] = useState('')
-    console.log(window)
     useEffect(() => {
         setPage(window.location.href.split('/')[3])
     })
-    console.log(page)
 
     const handleClick = (page_title) => {
         setPage(page_title)
@@ -22,7 +20,7 @@ const Navbar = () => {
                 <ul>
                     <li className={page == 'history' ? 'active' : ''}><button to='/history' onClick={() => { handleClick('history') }}>History</button></li>
                     <li className={page == 'provider_notes' ? 'active' : ''}><button to='/provider_notes' onClick={() => { handleClick('provider_notes') }}>Provider Notes</button></li>
-                    <li className={page == 'summary' ? 'active' : ''}><button to='/summary' onClick={() => { handleClick('summary') }}>Summary</button></li>
+        
                 </ul>
             </div>
             <Box>
