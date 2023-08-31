@@ -1,3 +1,4 @@
+from django.http import JsonResponse
 from django.shortcuts import render
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
@@ -10,7 +11,6 @@ from django.db.models import Count, F, DateTimeField, CharField, Max
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.filters import SearchFilter
 from django.db.models.functions import Cast
-
 def get_patients():
     # select patient id, first name, age, 
     query = "SELECT * FROM "
@@ -70,3 +70,4 @@ class ListSummary(ListAPIView):
     queryset = Demographicsview.objects.select_related('results', 'diagnosis').prefetch_related('notes', 'vitals', 'orders').all()
 
     serializer_class = AllPatientDemographicsSerializer
+
