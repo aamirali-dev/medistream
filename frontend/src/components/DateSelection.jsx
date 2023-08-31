@@ -1,13 +1,28 @@
-import React from 'react'
+import React, {useEffect, useState} from 'react'
 import { useParams } from 'react-router-dom'
 import { FormControl, InputLabel, Select, MenuItem } from '@mui/material'
+import axios from 'axios'
+import CustomButton from '../CustomMui/CustomButton'
+
+
+
+
 const DateSelection = () => {
     const { pid, name, gender, age } = useParams()
     console.log({ pid, name, gender, age })
-    const [age1, setAge] = React.useState('');
-
+    const [selectedDate, setSelectedDate] = React.useState('');
+    const [dates, setDates] = useState('')
+    const [error,setError] = useState('')
+    useEffect(() => {
+        axios
+            .get(`${process.env.REACT_APP_SERVER_URL}/api/dates/${pid}`)
+            .then((res) => setDates(res.data))
+            .catch(err => {
+                setError(err.message);
+            });
+    }, [])
     const handleChange = (event) => {
-        setAge(event.target.value);
+        setSelectedDate(event.target.value);
     };
     return (
         <div className='container'>
@@ -28,23 +43,25 @@ const DateSelection = () => {
                     </tr>
                 </tbody>
             </table>
-            <div className='select-input'>
-                <p>Please select visit for notes and summary:</p>
+            {dates?<div className='select-input'>
+                <p>Please select visit date for notes and summary:</p>
             <FormControl fullWidth>
-                <InputLabel id="demo-simple-select-label">Visit Date:</InputLabel>
+                <InputLabel id="demo-simple-select-label">Date:</InputLabel>
                 <Select
                     labelId="demo-simple-select-label"
                     id="demo-simple-select"
-                    value={age1}
+                    value={selectedDate}
                     label="Age"
                     onChange={handleChange}
                 >
-                    <MenuItem value={10}>Ten</MenuItem>
-                    <MenuItem value={20}>Twenty</MenuItem>
-                    <MenuItem value={30}>Thirty</MenuItem>
+                    {dates.map((date,index)=>(
+                        <MenuItem value={date.date} key  = {index}>{(new Date(date.date)).toUTCString()}</MenuItem>
+                    ))}
+                    
                 </Select>
             </FormControl>
-            </div>
+            </div>:<p className='select-input'>Please Wait...</p>}
+            <CustomButton variant = 'contained'>Continue</CustomButton>
         </div>
     )
 }
