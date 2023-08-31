@@ -3,6 +3,7 @@ from rest_framework import serializers
 from rest_framework import serializers
 from .models import Demographicsview, Diagnosisview, Notesview, Vitalsview, Ordersview, Resultsview
 
+
 class PatientSerializer(serializers.ModelSerializer):
     class Meta:
         model = Demographicsview
@@ -16,6 +17,7 @@ class PatientSerializer(serializers.ModelSerializer):
 
     patient_first_name = serializers.StringRelatedField()
     last_visit_date = serializers.StringRelatedField()
+
 
 class PatientSerializerFromNotes(serializers.ModelSerializer):
     class Meta:
@@ -34,30 +36,45 @@ class PatientSerializerFromNotes(serializers.ModelSerializer):
     gender = serializers.CharField(max_length=1)
     # count = serializers.IntegerField()
 
+
 class PatientDemographicsSerializer(serializers.ModelSerializer):
     class Meta:
         model = Demographicsview
         fields = '__all__'
+
 
 class DiagnosisSerializer(serializers.ModelSerializer):
     class Meta:
         model = Diagnosisview
         fields = '__all__'
 
+
 class ProviderNoteSerializer(serializers.ModelSerializer):
     class Meta:
         model = Notesview
-        fields = '__all__'
+        # fields = '__all__'
+        exclude = ['soaptext']
+
 
 class VitalSerializer(serializers.ModelSerializer):
     class Meta:
         model = Vitalsview
         fields = '__all__'
 
+
 class OrderSerializer(serializers.ModelSerializer):
     class Meta:
         model = Ordersview
         fields = '__all__'
+
+    results = serializers.SerializerMethodField()
+
+    def get_results(self, instance):
+        date = self.context.get('date')
+        results_queryset = instance.results.filter(lab_code=instance.lab_code)
+        serializer = ResultSerializer(results_queryset, many=True)
+        return serializer.data
+
 
 class ResultSerializer(serializers.ModelSerializer):
     class Meta:
@@ -77,15 +94,14 @@ class AllPatientDemographicsSerializer(serializers.ModelSerializer):
             'diagnosis', 
             'notes', 
             'orders', 
-            'results', 
+            # 'results', 
             'vitals',
         ]
-
 
     diagnosis = serializers.SerializerMethodField()
     notes = serializers.SerializerMethodField()
     orders = serializers.SerializerMethodField()
-    results = serializers.SerializerMethodField()
+    # results = serializers.SerializerMethodField()
     vitals = serializers.SerializerMethodField()
 
     def get_diagnosis(self, instance):
@@ -106,11 +122,11 @@ class AllPatientDemographicsSerializer(serializers.ModelSerializer):
             serializer = OrderSerializer(orders_queryset, many=True)
             return serializer.data
 
-    def get_results(self, instance):
-        date = self.context.get('date')
-        results_queryset = instance.results.filter(result_date_time=date)
-        serializer = ResultSerializer(results_queryset, many=True)
-        return serializer.data
+    # def get_results(self, instance):
+    #     date = self.context.get('date')
+    #     results_queryset = instance.results.filter(result_date_time=date)
+    #     serializer = ResultSerializer(results_queryset, many=True)
+    #     return serializer.data
 
     def get_vitals(self, instance):
         date = self.context.get('date')

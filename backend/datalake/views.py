@@ -1,4 +1,3 @@
-from django.http import JsonResponse
 from django.shortcuts import render
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
@@ -15,7 +14,7 @@ from django.db.models.functions import Cast
 
 
 def get_patients():
-    # select patient id, first name, age, 
+    # select patient id, first name, age,
     query = "SELECT * FROM "
 
 
@@ -24,10 +23,10 @@ def search():
 
 
 # search with first 2 characters
-# we can combine both get_patient and search 
+# we can combine both get_patient and search
 
 def send_details():
-    # recieve selected user details, 
+    # recieve selected user details,
     pass
 
 

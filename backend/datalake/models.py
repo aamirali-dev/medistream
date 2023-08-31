@@ -330,7 +330,7 @@ class Results(models.Model):
 
 class Resultsview(models.Model):
     result_date_time = models.DateTimeField(db_column='Result Date/Time')  # Field name made lowercase. Field renamed to remove unsuitable characters.
-    order_no = models.ForeignKey(Ordersview, on_delete=models.PROTECT, related_name='results', db_column='Order No', max_length=50, blank=True, null=True)  # Field name made lowercase. Field renamed to remove unsuitable characters.
+    orderno = models.ForeignKey(Ordersview, on_delete=models.PROTECT, related_name='results', db_column='Order No', max_length=50, blank=True, null=True)  # Field name made lowercase. Field renamed to remove unsuitable characters.
     patient_id = models.ForeignKey(Demographicsview, on_delete=models.PROTECT, related_name='results', db_column='Patient ID', primary_key=True)  # Field name made lowercase. Field renamed to remove unsuitable characters.
     laboratory = models.CharField(db_column='Laboratory', max_length=50, blank=True, null=True)  # Field name made lowercase.
     test_description = models.CharField(db_column='Test Description', max_length=255, blank=True, null=True)  # Field name made lowercase. Field renamed to remove unsuitable characters.
