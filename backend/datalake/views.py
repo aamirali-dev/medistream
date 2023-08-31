@@ -2,7 +2,7 @@ from django.http import JsonResponse
 from django.shortcuts import render
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from .serializers import DiagnosisSerializer, PatientDemographicsSerializer, PatientSerializer, AllPatientDemographicsSerializer, ProviderNoteSerializer, DateSerializer
+from .serializers import DiagnosisSerializer, PatientDemographicsSerializer, PatientSerializer, PatientSerializerFromNotes, AllPatientDemographicsSerializer, ProviderNoteSerializer, DateSerializer
 from .models import Diagnosisview, Demographicsview, Notesview
 from rest_framework.views import APIView
 from rest_framework.generics import ListAPIView, RetrieveAPIView
@@ -51,6 +51,17 @@ class ListPatients(ListAPIView):
     .order_by('patientid')
     serializer_class = PatientSerializer
 
+class ListPatientsFromNotes(ListAPIView):
+    filter_backends = [DjangoFilterBackend, SearchFilter]
+    search_fields = ['patient_first_name']
+    queryset = Notesview.objects.only('patient_id', 'patient_first_name') \
+    .order_by('patient_id') \
+    .annotate(count=Count('patient_first_name')) \
+    .annotate(gender=F('patient_id__gender')) \
+    .annotate(age_in_years=F('patient_id__age_in_years')) \
+    .annotate(last_visit_date=Max(Cast('date', output_field=DateTimeField())))
+    serializer_class = PatientSerializerFromNotes
+
 class ListNotes(ListAPIView):
     def get_queryset(self):
         return Notesview.objects.filter(patient_id=self.kwargs['pk'])
@@ -65,9 +76,11 @@ class ListNoteDates(ListAPIView):
 
     serializer_class = DateSerializer
 
-class ListSummary(ListAPIView):
-    pid = 4304
-    queryset = Demographicsview.objects.select_related('results', 'diagnosis').prefetch_related('notes', 'vitals', 'orders').all()
+class ListSummary(RetrieveAPIView):
+    queryset = Demographicsview.objects.all()
+    
+    def get_serializer_context(self):
+        return {'date': self.kwargs['date']}
 
     serializer_class = AllPatientDemographicsSerializer
 
