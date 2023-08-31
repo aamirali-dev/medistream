@@ -38,7 +38,7 @@ const Dashboard = () => {
     }
 
 const selectPatient = (pid, name, age, gender)=>{
-    const body = {"patientid":pid}
+    const body = {"patient_id":pid}
     // axios.post(`${process.env.REACT_APP_SERVER_URL}/api/ /`, body)
     //     .then((res) => {
     //         if(res.status == 200){
@@ -86,7 +86,7 @@ const selectPatient = (pid, name, age, gender)=>{
                         <tbody>
                         {data.results.map((item,index)=>(
                             item.patientid !==0 &&<tr key = {item.patientid}>
-                                <td>{item.patientid}</td>
+                                <td>{item.patient_id}</td>
                                 <td>{item.patient_first_name}</td>
                                 <td>{item.gender}</td>
                                 <td>{item.age_in_years}</td>
@@ -96,7 +96,7 @@ const selectPatient = (pid, name, age, gender)=>{
                                     padding:'4px 7px'
                                 }}
                                 onClick = {()=>{
-                                    selectPatient(item.patientid, item.patient_first_name, item.age_in_years, item.gender)
+                                    selectPatient(item.patient_id, item.patient_first_name, item.age_in_years, item.gender)
                                 }}
                                 >Select</CustomButton></td>
                             </tr>
