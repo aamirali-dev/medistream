@@ -54,7 +54,12 @@ class ListPatients(ListAPIView):
 class ListPatientsFromNotes(ListAPIView):
     filter_backends = [DjangoFilterBackend, SearchFilter]
     search_fields = ['patient_first_name']
-    queryset = Notesview.objects.distinct('patient_id')
+    queryset = Notesview.objects.only('patient_id', 'patient_first_name') \
+    .order_by('patient_id') \
+    .annotate(count=Count('patient_first_name')) \
+    .annotate(gender=F('patient_id__gender')) \
+    .annotate(age_in_years=F('patient_id__age_in_years')) \
+    .annotate(last_visit_date=Max(Cast('date', output_field=DateTimeField())))
     serializer_class = PatientSerializerFromNotes
 
 class ListNotes(ListAPIView):
@@ -72,7 +77,6 @@ class ListNoteDates(ListAPIView):
     serializer_class = DateSerializer
 
 class ListSummary(ListAPIView):
-    pid = 4304
     queryset = Demographicsview.objects.select_related('results', 'diagnosis').prefetch_related('notes', 'vitals', 'orders').all()
 
     serializer_class = AllPatientDemographicsSerializer

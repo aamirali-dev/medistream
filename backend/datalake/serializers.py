@@ -6,7 +6,13 @@ from .models import Demographicsview, Diagnosisview, Notesview, Vitalsview, Orde
 class PatientSerializer(serializers.ModelSerializer):
     class Meta:
         model = Demographicsview
-        fields = ['patientid', 'gender', 'age_in_years', 'patient_first_name', 'last_visit_date']
+        fields = [
+                    'patientid', 
+                    'gender', 
+                    'age_in_years', 
+                    'patient_first_name', 
+                    'last_visit_date'
+                ]
 
     patient_first_name = serializers.StringRelatedField()
     last_visit_date = serializers.StringRelatedField()
@@ -14,17 +20,18 @@ class PatientSerializer(serializers.ModelSerializer):
 class PatientSerializerFromNotes(serializers.ModelSerializer):
     class Meta:
         model = Notesview
-        fields = ['patient_id', 
-                  'patient_first_name', 
-                #   'last_visit_date',
-                #   'gender', 
-                #   'age_in_years',
-                # 'count'
+        fields = [
+                    'patient_id', 
+                    'patient_first_name', 
+                    'last_visit_date',
+                    'gender', 
+                    'age_in_years',
+                    # 'count'
                 ]
 
-    # last_visit_date = serializers.StringRelatedField()
-    # age_in_years = serializers.IntegerField(default=0)
-    # gender = serializers.CharField(max_length=1)
+    last_visit_date = serializers.StringRelatedField()
+    age_in_years = serializers.IntegerField(default=0)
+    gender = serializers.CharField(max_length=1)
     # count = serializers.IntegerField()
 
 class PatientDemographicsSerializer(serializers.ModelSerializer):

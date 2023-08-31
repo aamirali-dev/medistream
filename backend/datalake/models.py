@@ -87,9 +87,9 @@ class Diagnosisview(models.Model):
         db_table = 'DiagnosisView'
 
 class Notesview(models.Model):
-    patient_id = models.ForeignKey(Demographicsview, db_column='Patient ID', on_delete=models.PROTECT, related_name='notes')  # Field name made lowercase. Field renamed to remove unsuitable characters.
+    patient_id = models.ForeignKey(Demographicsview, db_column='Patient ID', on_delete=models.PROTECT, related_name='notes', primary_key=True)  # Field name made lowercase. Field renamed to remove unsuitable characters.
     date = models.DateTimeField(db_column='Date')  # Field name made lowercase.
-    note_id = models.IntegerField(db_column='Note ID', primary_key=True)  # Field name made lowercase. Field renamed to remove unsuitable characters.
+    note_id = models.IntegerField(db_column='Note ID')  # Field name made lowercase. Field renamed to remove unsuitable characters.
     patient_first_name = models.CharField(db_column='Patient First Name', max_length=50, null=True, blank=True)
     visit_reason = models.CharField(db_column='Visit Reason', max_length=50, blank=True, null=True)  # Field name made lowercase. Field renamed to remove unsuitable characters.
     note_template = models.CharField(db_column='Note Template', max_length=50, blank=True, null=True)  # Field name made lowercase. Field renamed to remove unsuitable characters.
