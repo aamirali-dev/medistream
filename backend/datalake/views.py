@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from .serializers import DiagnosisSerializer, PatientDemographicsSerializer, PatientSerializer, AllPatientDemographicsSerializer, ProviderNoteSerializer, DateSerializer
+from .serializers import DiagnosisSerializer, PatientDemographicsSerializer, PatientSerializer, PatientSerializerFromNotes, AllPatientDemographicsSerializer, ProviderNoteSerializer, DateSerializer
 from .models import Diagnosisview, Demographicsview, Notesview
 from rest_framework.views import APIView
 from rest_framework.generics import ListAPIView, RetrieveAPIView
@@ -50,6 +50,12 @@ class ListPatients(ListAPIView):
     .annotate(last_visit_date=Max(Cast('notes__date', output_field=DateTimeField()))) \
     .order_by('patientid')
     serializer_class = PatientSerializer
+
+class ListPatientsFromNotes(ListAPIView):
+    filter_backends = [DjangoFilterBackend, SearchFilter]
+    search_fields = ['patient_first_name']
+    queryset = Notesview.objects.distinct('patient_id')
+    serializer_class = PatientSerializerFromNotes
 
 class ListNotes(ListAPIView):
 
