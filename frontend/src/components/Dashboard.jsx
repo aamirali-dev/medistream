@@ -37,16 +37,16 @@ const Dashboard = () => {
         setPage(value)
     }
 
-const selectPatient = (pid)=>{
+const selectPatient = (pid, name, age, gender)=>{
     const body = {"patientid":pid}
-    axios.post(`${process.env.REACT_APP_SERVER_URL}/api/ /`, body)
-        .then((res) => {
-            if(res.status == 200){
-                navigate('/select-dates')
-            }
-        })
-        .catch((err)=>setError(err.message))
-        navigate('/select-dates?')
+    // axios.post(`${process.env.REACT_APP_SERVER_URL}/api/ /`, body)
+    //     .then((res) => {
+    //         if(res.status == 200){
+    //             navigate('/select-dates')
+    //         }
+    //     })
+    //     .catch((err)=>setError(err.message))
+        navigate(`/provider_notes/select-dates/${pid}/${name}/${gender}/${age}`)
 }
 
 
@@ -57,7 +57,7 @@ const selectPatient = (pid)=>{
             {!data && <p className='message'>Loading Please wait...</p>}
             {data  ?
                 
-            <div className='patient-table-container'>
+            <div className='container'>
                     <div className='search-container'>
                         <div className='search-div'>
                         <CustomTextField type = 'text' name = 'search' label = '' fullWidth placeholder = 'Search...' 
@@ -96,13 +96,13 @@ const selectPatient = (pid)=>{
                                     padding:'4px 7px'
                                 }}
                                 onClick = {()=>{
-                                    selectPatient(item.patientid)
+                                    selectPatient(item.patientid, item.patient_first_name, item.age_in_years, item.gender)
                                 }}
                                 >Select</CustomButton></td>
                             </tr>
                         ))}
                         </tbody>
-                    </table>
+                </table>
                 <Pagination count={Math.ceil(data.count / 20)} variant="outlined" color="standard" 
                 onChange={handlePageChange}
                 />

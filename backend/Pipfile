@@ -12,6 +12,7 @@ django-cors-headers = "*"
 django-mssql = "*"
 mysqlclient = "*"
 django-filter = "*"
+django-debug-toolbar = "*"
 
 [dev-packages]
 

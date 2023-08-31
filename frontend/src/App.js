@@ -11,6 +11,7 @@ import PrivateRoute from './PrivateRoutes';
 import Navbar from './components/Navbar';
 import Summary from './components/Summary';
 import History from './components/History';
+import DateSelection from './components/DateSelection';
 
 function App() {
 
@@ -27,6 +28,7 @@ function App() {
               <Route path = '/provider_notes' element = {<Dashboard />} />
               <Route path = '/history' element = {<History />} />
               <Route path = '/summary' element = {<Summary />} />
+              <Route path = '/provider_notes/select-dates/:pid/:name/:gender/:age' element = {<DateSelection />} />
             </Route>
           </Routes>
         </MyProvider>

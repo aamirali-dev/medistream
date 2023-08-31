@@ -11,6 +11,11 @@ a {
   text-decoration: none;
 }
 
+h1{
+  font-family: 'Quando', serif;
+  text-align: center;
+}
+
 .logo {
   width: 150px;
 }
@@ -66,7 +71,7 @@ nav img {
   border: none;
   background-color: transparent;
   font-size: 14px;
-  font-family: "poppins";
+  font-family: "poppins",sans-serif;
   cursor: pointer;
 }
 
@@ -83,12 +88,13 @@ nav img {
   transition: background-color 1s ease-in-out;
 }
 
-.patient-table-container {
+.container {
   width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  margin:20px auto;
 }
 
 .patient-table{
@@ -118,7 +124,6 @@ nav img {
 .search-container{
   width: 70%;
   margin:10px auto 40px auto;
-  margin:10px auto 40px auto;
 }
 .search-div{
   display: flex;
@@ -141,3 +146,14 @@ nav img {
 .search-div button:hover{
   background-color: rgb(240, 240, 240);
 }
+
+.select-input{
+  width: 25%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap:30px;
+  margin:30px auto;
+}
+

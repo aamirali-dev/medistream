@@ -58,7 +58,6 @@ class ListPatientsFromNotes(ListAPIView):
     serializer_class = PatientSerializerFromNotes
 
 class ListNotes(ListAPIView):
-
     def get_queryset(self):
         return Notesview.objects.filter(patient_id=self.kwargs['pk'])
 
@@ -66,7 +65,7 @@ class ListNotes(ListAPIView):
 
 
 class ListNoteDates(ListAPIView):
-
+    pagination_class = None
     def get_queryset(self):
         return Notesview.objects.filter(patient_id=self.kwargs['pk']).only('date')
 
