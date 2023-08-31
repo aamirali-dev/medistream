@@ -76,7 +76,10 @@ class ListNoteDates(ListAPIView):
 
     serializer_class = DateSerializer
 
-class ListSummary(ListAPIView):
-    queryset = Demographicsview.objects.select_related('results', 'diagnosis').prefetch_related('notes', 'vitals', 'orders').all()
+class ListSummary(RetrieveAPIView):
+    queryset = Demographicsview.objects.all()
+    
+    def get_serializer_context(self):
+        return {'date': self.kwargs['date']}
 
     serializer_class = AllPatientDemographicsSerializer

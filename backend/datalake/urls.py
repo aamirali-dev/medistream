@@ -7,7 +7,7 @@ urlpatterns = [
     # path('patients/', views.ListPatients.as_view()),
     path('patients/', views.ListPatientsFromNotes.as_view()),
     # path('summary/<int:pk>', views.ListSummary.as_view()),
-    path('summary/<int:pk>', views.ListSummary.as_view()),
+    path('summary/<int:pk>/<str:date>', views.ListSummary.as_view()),
     path('notes/<int:pk>', views.ListNotes.as_view()),
     path('dates/<int:pk>', views.ListNoteDates.as_view()),
 ]

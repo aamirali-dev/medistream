@@ -68,12 +68,56 @@ class ResultSerializer(serializers.ModelSerializer):
 class AllPatientDemographicsSerializer(serializers.ModelSerializer):
     class Meta:
         model = Demographicsview
-        fields = '__all__'
-    diagnosis = DiagnosisSerializer(many=True)
-    notes = ProviderNoteSerializer(many=True)
-    orders = OrderSerializer(many=True)
-    results = ResultSerializer(many=True)
-    vitals = VitalSerializer(many=True)
+        fields = [
+            'patientid', 
+            'gender', 
+            'age_in_years', 
+            'marital_status', 
+            'date_of_death', 
+            'diagnosis', 
+            'notes', 
+            'orders', 
+            'results', 
+            'vitals',
+        ]
+
+
+    diagnosis = serializers.SerializerMethodField()
+    notes = serializers.SerializerMethodField()
+    orders = serializers.SerializerMethodField()
+    results = serializers.SerializerMethodField()
+    vitals = serializers.SerializerMethodField()
+
+    def get_diagnosis(self, instance):
+        date = self.context.get('date')
+        diagnosis_queryset = instance.diagnosis.filter(date_time=date)
+        serializer = DiagnosisSerializer(diagnosis_queryset, many=True)
+        return serializer.data
+    
+    def get_notes(self, instance):
+        date = self.context.get('date')
+        notes_queryset = instance.notes.filter(date=date)
+        serializer = ProviderNoteSerializer(notes_queryset, many=True)
+        return serializer.data
+    
+    def get_orders(self, instance):
+            date = self.context.get('date')
+            orders_queryset = instance.orders.filter(order_date_time=date)
+            serializer = OrderSerializer(orders_queryset, many=True)
+            return serializer.data
+
+    def get_results(self, instance):
+        date = self.context.get('date')
+        results_queryset = instance.results.filter(result_date_time=date)
+        serializer = ResultSerializer(results_queryset, many=True)
+        return serializer.data
+
+    def get_vitals(self, instance):
+        date = self.context.get('date')
+        vitals_queryset = instance.vitals.filter(date_time=date)
+        serializer = VitalSerializer(vitals_queryset, many=True)
+        return serializer.data
+
 
 class DateSerializer(serializers.ModelSerializer):
     class Meta:
