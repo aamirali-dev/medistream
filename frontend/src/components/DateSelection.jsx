@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { FormControl, InputLabel, Select, MenuItem } from '@mui/material'
 import axios from 'axios'
 import CustomButton from '../CustomMui/CustomButton'
@@ -9,10 +9,11 @@ import CustomButton from '../CustomMui/CustomButton'
 
 const DateSelection = () => {
     const { pid, name, gender, age } = useParams()
-    console.log({ pid, name, gender, age })
     const [selectedDate, setSelectedDate] = React.useState('');
     const [dates, setDates] = useState('')
     const [error,setError] = useState('')
+    const [dateError,setDateError] = useState(false)
+    const navigate = useNavigate()
     useEffect(() => {
         axios
             .get(`${process.env.REACT_APP_SERVER_URL}/api/dates/${pid}`)
@@ -22,8 +23,17 @@ const DateSelection = () => {
             });
     }, [])
     const handleChange = (event) => {
+        setDateError(false)
         setSelectedDate(event.target.value);
     };
+    const handleContinue = ()=>{
+        if(selectedDate == '' || selectedDate== null || dateError){
+            setDateError(true)
+        }
+        else{
+            navigate(`/provider_notes/notes/`, {state : {pid,name, gender, age, selectedDate}})
+        }
+    }
     return (
         <div className='container'>
             <h1>Select Visit Date</h1>
@@ -61,7 +71,8 @@ const DateSelection = () => {
                 </Select>
             </FormControl>
             </div>:<p className='select-input'>Please Wait...</p>}
-            <CustomButton variant = 'contained'>Continue</CustomButton>
+            {dateError && <p className='error'>Please Select a date first</p>}
+            <CustomButton variant = 'contained' onClick = {handleContinue}>Continue</CustomButton>
         </div>
     )
 }

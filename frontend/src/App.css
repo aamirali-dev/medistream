@@ -157,3 +157,19 @@ nav img {
   margin:30px auto;
 }
 
+
+.patient-detail-table-div{
+  margin:70px auto;
+  width:90%;
+  overflow-x: scroll;
+}
+
+.patient-detail-table-div h2{
+  text-align: center;
+  font-family: 'Quando', serif;
+}
+
+.patient-detail-table{
+  width: 100%;
+  overflow-x: scroll;
+}

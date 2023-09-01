@@ -12,6 +12,7 @@ import Navbar from './components/Navbar';
 import Summary from './components/Summary';
 import History from './components/History';
 import DateSelection from './components/DateSelection';
+import Notes from './components/Notes';
 
 function App() {
 
@@ -29,6 +30,7 @@ function App() {
               <Route path = '/history' element = {<History />} />
               <Route path = '/summary' element = {<Summary />} />
               <Route path = '/provider_notes/select-dates/:pid/:name/:gender/:age' element = {<DateSelection />} />
+              <Route path = '/provider_notes/notes' element = {<Notes />} /> 
             </Route>
           </Routes>
         </MyProvider>
