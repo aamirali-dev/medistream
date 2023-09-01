@@ -1,52 +1,18 @@
-from django.shortcuts import render
-from rest_framework.decorators import api_view
-from rest_framework.response import Response
-from .serializers import DiagnosisSerializer, PatientDemographicsSerializer, PatientSerializer, \
+from datetime import datetime
+from django.db.models import Count, F, DateTimeField, CharField, Max
+from django.db.models.functions import Cast
+from rest_framework.filters import SearchFilter
+from rest_framework.generics import ListAPIView, RetrieveAPIView
+from django_filters.rest_framework import DjangoFilterBackend
+
+from .serializers import DiagnosisSerializer, PatientSerializer, \
     PatientSerializerFromNotes, AllPatientDemographicsSerializer, ProviderNoteSerializer, DateSerializer
 from .models import Diagnosisview, Demographicsview, Notesview
-from rest_framework.views import APIView
-from rest_framework.generics import ListAPIView, RetrieveAPIView
-from rest_framework.pagination import PageNumberPagination
-from django.db.models import Count, F, DateTimeField, CharField, Max
-from django_filters.rest_framework import DjangoFilterBackend
-from rest_framework.filters import SearchFilter
-from django.db.models.functions import Cast
 from .utils import clean_response_data
-from datetime import datetime
+from .gpt import ChatGPT
+from summarize.models import Prompts
 
-
-def get_patients():
-    # select patient id, first name, age,
-    query = "SELECT * FROM "
-
-
-def search():
-    pass
-
-
-# search with first 2 characters
-# we can combine both get_patient and search
-
-def send_details():
-    # recieve selected user details,
-    pass
-
-
-def send_edited_prompt():
-    pass
-
-
-def get_history():
-    pass
-
-
-def get_summary():
-    pass
-
-
-def get_patient_notes():
-    pass
-
+import json
 
 class ListDiagnosis(ListAPIView):
     queryset = Diagnosisview.objects.all()
@@ -105,9 +71,12 @@ class ListSummary(RetrieveAPIView):
         return {'date': date}
     
     def get(self, request, *args, **kwargs):
+        print(self.request.user.id)
         response = self.retrieve(request, *args, **kwargs)
         clean_response_data(response.data)
-
+        gpt = ChatGPT(json.dumps(response.data))
+        response.data['gpt_response'] = gpt.generate_prompt()
+        prompt = Prompts.objects.create(user_id=self.request.user.id, prompt=response.data['gpt_response'])
         return response
         
 

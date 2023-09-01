@@ -22,7 +22,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('auth/', include('djoser.urls')),
     path('auth/', include('djoser.urls.jwt')),
-    # path('api/',include('summarize.urls')),
     path('api/', include('datalake.urls')),
+    path('', include('summarize.urls')),
     path('__debug__/', include(debug_toolbar.urls)),
 ]
