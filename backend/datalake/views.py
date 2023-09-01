@@ -15,39 +15,6 @@ from .utils import clean_response_data
 from datetime import datetime
 
 
-def get_patients():
-    # select patient id, first name, age,
-    query = "SELECT * FROM "
-
-
-def search():
-    pass
-
-
-# search with first 2 characters
-# we can combine both get_patient and search
-
-def send_details():
-    # recieve selected user details,
-    pass
-
-
-def send_edited_prompt():
-    pass
-
-
-def get_history():
-    pass
-
-
-def get_summary():
-    pass
-
-
-def get_patient_notes():
-    pass
-
-
 class ListDiagnosis(ListAPIView):
     queryset = Diagnosisview.objects.all()
     serializer_class = DiagnosisSerializer
