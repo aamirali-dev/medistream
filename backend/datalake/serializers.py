@@ -2,6 +2,9 @@ from rest_framework import serializers
 
 from rest_framework import serializers
 from .models import Demographicsview, Diagnosisview, Notesview, Vitalsview, Ordersview, Resultsview
+from django.db.models import DateField
+from django.db.models.functions import Cast
+
 
 
 class PatientSerializer(serializers.ModelSerializer):
@@ -105,20 +108,24 @@ class AllPatientDemographicsSerializer(serializers.ModelSerializer):
     vitals = serializers.SerializerMethodField()
 
     def get_diagnosis(self, instance):
-        date = self.context.get('date')
-        diagnosis_queryset = instance.diagnosis.filter(date_time=date)
+        # date = self.context.get('date')
+        # diagnosis_queryset = instance.diagnosis.annotate(date=Cast('date_time', output_field=DateField())).filter(date=date)
+        diagnosis_queryset = self.filter_by_date(instance.diagnosis, 'date_time')
         serializer = DiagnosisSerializer(diagnosis_queryset, many=True)
         return serializer.data
     
     def get_notes(self, instance):
-        date = self.context.get('date')
-        notes_queryset = instance.notes.filter(date=date)
+        # date = self.context.get('date')
+        # notes_queryset = instance.notes.annotate(date_compare=Cast('date', output_field=DateField())).filter(date_compare=date)
+        notes_queryset = self.filter_by_date(instance.notes, 'date')
         serializer = ProviderNoteSerializer(notes_queryset, many=True)
         return serializer.data
     
     def get_orders(self, instance):
-            date = self.context.get('date')
-            orders_queryset = instance.orders.filter(order_date_time=date)
+            # date = self.context.get('date')
+            # # orders_queryset = instance.orders.filter(order_date_time=date)
+            # orders_queryset = instance.orders.annotate(date=Cast('order_date_time', output_field=DateField())).filter(date=date)
+            orders_queryset = self.filter_by_date(instance.orders, 'order_date_time')
             serializer = OrderSerializer(orders_queryset, many=True)
             return serializer.data
 
@@ -129,10 +136,17 @@ class AllPatientDemographicsSerializer(serializers.ModelSerializer):
     #     return serializer.data
 
     def get_vitals(self, instance):
-        date = self.context.get('date')
-        vitals_queryset = instance.vitals.filter(date_time=date)
+        # date = self.context.get('date')
+        # vitals_queryset = instance.vitals.annotate(date=Cast('date_time', output_field=DateField())).filter(date=date)
+        # vitals_queryset = instance.vitals.filter(date_time=date)
+        vitals_queryset = self.filter_by_date(instance.vitals, 'date_time')
         serializer = VitalSerializer(vitals_queryset, many=True)
         return serializer.data
+    
+    
+    def filter_by_date(self, queryset, date_column):
+        date = self.context.get('date')
+        return queryset.annotate(date_compare=Cast(date_column, output_field=DateField())).filter(date_compare=date)
 
 
 class DateSerializer(serializers.ModelSerializer):

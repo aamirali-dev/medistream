@@ -11,6 +11,8 @@ from django.db.models import Count, F, DateTimeField, CharField, Max
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.filters import SearchFilter
 from django.db.models.functions import Cast
+from .utils import clean_response_data
+from datetime import datetime
 
 
 def get_patients():
@@ -98,6 +100,15 @@ class ListSummary(RetrieveAPIView):
     queryset = Demographicsview.objects.all()
 
     def get_serializer_context(self):
-        return {'date': self.kwargs['date']}
+        date = self.kwargs['date']
+        date = datetime.strptime(date, '%Y-%m-%dT%H:%M:%SZ').date()
+        return {'date': date}
+    
+    def get(self, request, *args, **kwargs):
+        response = self.retrieve(request, *args, **kwargs)
+        clean_response_data(response.data)
+
+        return response
+        
 
     serializer_class = AllPatientDemographicsSerializer
