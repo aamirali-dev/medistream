@@ -10,6 +10,7 @@ const Notes = () => {
     const [error, setError] = useState('')
     const [loading, setLoading] = useState(true)
     const [showData, setShowData] = useState(false)
+    const [edit, setEdit] = useState(false)
 
     useEffect(() => {
         axios
@@ -45,8 +46,15 @@ const Notes = () => {
             {!data && !error && <p>Loading, please wait...</p>}
             {data && <div className='iframe' >
                 <h2>Generated Note</h2>
-                <iframe srcdoc={html} width='100%' height='100%' />
-                <CustomButton variant = 'contained'>Edit</CustomButton>
+                {edit? 
+                <div>
+
+                </div> 
+                :<div>
+                    <iframe srcdoc={html} width='100%' height='100%' />
+                    <CustomButton variant = 'contained'>Edit</CustomButton>
+                    </div>}
+                
                 </div>}
 
             {data && showData &&

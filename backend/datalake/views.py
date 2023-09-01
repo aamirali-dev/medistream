@@ -57,6 +57,7 @@ class ListNoteDates(ListAPIView):
     pagination_class = None
 
     def get_queryset(self):
+        print(self.request.user)
         return Notesview.objects.filter(patient_id=self.kwargs['pk']).only('date')
 
     serializer_class = DateSerializer

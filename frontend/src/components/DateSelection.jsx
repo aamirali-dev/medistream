@@ -15,8 +15,13 @@ const DateSelection = () => {
     const [dateError,setDateError] = useState(false)
     const navigate = useNavigate()
     useEffect(() => {
+        const config = {
+            'headers':{
+                'Authorization':`JWT ${localStorage.getItem("access")}`
+            }
+        }
         axios
-            .get(`${process.env.REACT_APP_SERVER_URL}/api/dates/${pid}`)
+            .get(`${process.env.REACT_APP_SERVER_URL}/api/dates/${pid}`, config)
             .then((res) => setDates(res.data))
             .catch(err => {
                 setError(err.message);

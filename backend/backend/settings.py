@@ -41,6 +41,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
+    'rest_framework.authtoken',
+    'rest_framework_simplejwt',
     'corsheaders',
     'djoser',
     'debug_toolbar',
@@ -155,9 +157,14 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTH_USER_MODEL = 'summarize.UserAccount'
 REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated'
+    ],
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ),
+    'PAGE_SIZE': 20,
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination'
 }
 SIMPLE_JWT = {
    'AUTH_HEADER_TYPES': ('JWT',),
@@ -189,7 +196,7 @@ DJOSER = {
 CORS_ORIGIN_ALLOW_ALL = True
 CORS_ALLOW_CREDENTIALS = True
 
-REST_FRAMEWORK = {
-	'PAGE_SIZE': 20,
-	'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination'
-}
+# REST_FRAMEWORK = {
+# 	'PAGE_SIZE': 20,
+# 	'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination'
+# }

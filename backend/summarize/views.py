@@ -8,5 +8,6 @@ class ListPrompts(ListAPIView):
     serializer_class = PromptSerializer
 
     def get_queryset(self):
+        print(self.request.user.id)
         return Prompts.objects.filter(user_id=self.kwargs['pk'])
 
