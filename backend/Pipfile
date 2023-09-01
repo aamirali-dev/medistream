@@ -13,6 +13,7 @@ django-mssql = "*"
 mysqlclient = "*"
 django-filter = "*"
 django-debug-toolbar = "*"
+openai = "*"
 
 [dev-packages]
 

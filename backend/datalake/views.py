@@ -9,7 +9,10 @@ from .serializers import DiagnosisSerializer, PatientSerializer, \
     PatientSerializerFromNotes, AllPatientDemographicsSerializer, ProviderNoteSerializer, DateSerializer
 from .models import Diagnosisview, Demographicsview, Notesview
 from .utils import clean_response_data
+from .gpt import ChatGPT
+from summarize.models import Prompts
 
+import json
 
 class ListDiagnosis(ListAPIView):
     queryset = Diagnosisview.objects.all()
@@ -68,9 +71,12 @@ class ListSummary(RetrieveAPIView):
         return {'date': date}
     
     def get(self, request, *args, **kwargs):
+        print(self.request.user.id)
         response = self.retrieve(request, *args, **kwargs)
         clean_response_data(response.data)
-
+        gpt = ChatGPT(json.dumps(response.data))
+        response.data['gpt_response'] = gpt.generate_prompt()
+        prompt = Prompts.objects.create(user_id=self.request.user.id, prompt=response.data['gpt_response'])
         return response
         
 
