@@ -1,9 +1,7 @@
 from rest_framework import serializers
-
-from rest_framework import serializers
-from .models import Demographicsview, Diagnosisview, Notesview, Vitalsview, Ordersview, Resultsview
 from django.db.models import DateField
 from django.db.models.functions import Cast
+from .models import Demographicsview, Diagnosisview, Notesview, Vitalsview, Ordersview, Resultsview
 
 
 

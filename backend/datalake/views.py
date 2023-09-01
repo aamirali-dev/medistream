@@ -1,18 +1,14 @@
-from django.shortcuts import render
-from rest_framework.decorators import api_view
-from rest_framework.response import Response
-from .serializers import DiagnosisSerializer, PatientDemographicsSerializer, PatientSerializer, \
+from datetime import datetime
+from django.db.models import Count, F, DateTimeField, CharField, Max
+from django.db.models.functions import Cast
+from rest_framework.filters import SearchFilter
+from rest_framework.generics import ListAPIView, RetrieveAPIView
+from django_filters.rest_framework import DjangoFilterBackend
+
+from .serializers import DiagnosisSerializer, PatientSerializer, \
     PatientSerializerFromNotes, AllPatientDemographicsSerializer, ProviderNoteSerializer, DateSerializer
 from .models import Diagnosisview, Demographicsview, Notesview
-from rest_framework.views import APIView
-from rest_framework.generics import ListAPIView, RetrieveAPIView
-from rest_framework.pagination import PageNumberPagination
-from django.db.models import Count, F, DateTimeField, CharField, Max
-from django_filters.rest_framework import DjangoFilterBackend
-from rest_framework.filters import SearchFilter
-from django.db.models.functions import Cast
 from .utils import clean_response_data
-from datetime import datetime
 
 
 class ListDiagnosis(ListAPIView):
