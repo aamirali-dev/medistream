@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useLocation } from 'react-router-dom'
 import axios from 'axios'
 import CustomButton from '../CustomMui/CustomButton'
+import { html } from './Pagination'
 const Notes = () => {
     const location = useLocation()
     const { pid, name, gender, age, selectedDate } = location.state
@@ -9,6 +10,7 @@ const Notes = () => {
     const [error, setError] = useState('')
     const [loading, setLoading] = useState(true)
     const [showData, setShowData] = useState(false)
+
     useEffect(() => {
         axios
             .get(`${process.env.REACT_APP_SERVER_URL}/api/summary/${pid}/${selectedDate}`)
@@ -40,6 +42,13 @@ const Notes = () => {
                 </tbody>
             </table>
             <hr />
+            {!data && !error && <p>Loading, please wait...</p>}
+            {data && <div className='iframe' >
+                <h2>Generated Note</h2>
+                <iframe srcdoc={html} width='100%' height='100%' />
+                <CustomButton variant = 'contained'>Edit</CustomButton>
+                </div>}
+
             {data && showData &&
                 <div>
                     {data.notes.length > 0 &&
@@ -189,10 +198,55 @@ const Notes = () => {
                             </table>
                         </div>
                     }
+                    <hr />
+                    {
+                        data.vitals.length > 0 &&
+                        <div className='patient-detail-table-div'>
+                            <h2>Vitals</h2>
+                            <table className='patient-table patient-detail-table' >
+                                <thead>
+                                    <th>Date/Time</th>
+                                    <th>Weight</th>
+                                    <th>Height</th>
+                                    <th>BMI</th>
+                                    <th>BSA</th>
+                                    <th>Lean Body Weight</th>
+                                    <th>Ideal Body Weight</th>
+                                    <th>Category</th>
+                                    <th>Waist</th>
+                                    <th>Neck</th>
+                                    <th>Pulse</th>
+                                    <th>Systolic</th>
+                                    <th>Diastolic</th>
+                                    <th>Temperature</th>
+                                </thead>
+                                <tbody>
+                                    {data.vitals.map((vital, index) => (
+                                        <tr key={index}>
+                                            <td>{vital.date_time}</td>
+                                            <td>{vital.weight}</td>
+                                            <td>{vital.height}</td>
+                                            <td>{vital.bmi}</td>
+                                            <td>{vital.bsa}</td>
+                                            <td>{vital.leanbodyweight}</td>
+                                            <td>{vital.idealbodyweight}</td>
+                                            <td>{vital.category}</td>
+                                            <td>{vital.waist}</td>
+                                            <td>{vital.neck}</td>
+                                            <td>{vital.pulse}</td>
+                                            <td>{vital.systolic}</td>
+                                            <td>{vital.diastolic}</td>
+                                            <td>{vital.temperature}</td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        </div>
+                    }
                 </div>
             }
 
-            <CustomButton variant='contained' onClick={() => { setShowData(!showData) }}>Show Data</CustomButton>
+            {data && <CustomButton variant='contained' onClick={() => { setShowData(!showData) }}>Show Data</CustomButton>}
         </div>
     )
 }
