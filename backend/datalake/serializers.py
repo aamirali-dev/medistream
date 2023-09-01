@@ -56,19 +56,21 @@ class ProviderNoteSerializer(serializers.ModelSerializer):
     class Meta:
         model = Notesview
         # fields = '__all__'
-        exclude = ['soaptext']
+        exclude = ['soaptext', 'patient_id', 'note_id', 'created_date_and_time']
 
 
 class VitalSerializer(serializers.ModelSerializer):
     class Meta:
         model = Vitalsview
-        fields = '__all__'
+        # fields = '__all__'
+        exclude = ['noteid', 'vitalsid']
 
 
 class OrderSerializer(serializers.ModelSerializer):
     class Meta:
         model = Ordersview
-        fields = '__all__'
+        # fields = '__all__'
+        exclude = ['patient_id', 'note_id', 'urgency_level']
 
     results = serializers.SerializerMethodField()
 
@@ -82,7 +84,8 @@ class OrderSerializer(serializers.ModelSerializer):
 class ResultSerializer(serializers.ModelSerializer):
     class Meta:
         model = Resultsview
-        fields = '__all__'
+        # fields = '__all__'
+        exclude = ['patient_id', 'laboratory', 'status', 'latest_result', 'note_id']
 
 
 class AllPatientDemographicsSerializer(serializers.ModelSerializer):
