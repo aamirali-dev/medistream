@@ -66,7 +66,11 @@ const Navbar = () => {
                     open={Boolean(anchorElUser)}
                     onClose={handleCloseUserMenu}
                 >
-                    <MenuItem key={page} onClick={()=>{logout()}}>
+                    <MenuItem key={1} onClick={()=>{navigate('/provider_notes')
+                handleCloseUserMenu()}}>
+                        <Typography textAlign="center" >Dashboard</Typography>
+                    </MenuItem>
+                    <MenuItem key={2} onClick={()=>{logout()}}>
                         <Typography textAlign="center" >Logout</Typography>
                     </MenuItem>
                 </Menu>

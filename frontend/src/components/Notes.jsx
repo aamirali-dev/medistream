@@ -11,7 +11,6 @@ const Notes = () => {
     const [loading, setLoading] = useState(true)
     const [showData, setShowData] = useState(false)
     const [edit, setEdit] = useState(false)
-
     useEffect(() => {
         const config = {
             "headers":{

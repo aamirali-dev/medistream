@@ -1,9 +1,14 @@
 import React, {useEffect, useState} from 'react'
 import axios from 'axios'
 import CustomButton from '../CustomMui/CustomButton'
+import jwtDecode from 'jwt-decode'
+import { useNavigate } from 'react-router-dom'
 const History = () => {
     const [data, setData] = useState()
     const [error, setError] = useState()
+    const {user_id} = jwtDecode(localStorage.getItem('access'))
+    const navigate = useNavigate()
+
     useEffect(() => {
         const config = {
             "headers": {
@@ -11,44 +16,44 @@ const History = () => {
             }
         }
         axios
-            .get(`${process.env.REACT_APP_SERVER_URL}/prompts/`, config)
+            .get(`${process.env.REACT_APP_SERVER_URL}/prompts/${user_id}`, config)
             .then((res) => setData(res.data))
             .catch(err => {
                 setError(err.message);
             });
     }, [])
     return (
-        <div>
-            {data && <div>
-                <table className='patient-table' >
+        <div className='container'>
+            <h1>History</h1>
+            {data && 
+                <table className='patient-table  history-table' >
                         <thead>
+                            <th>Sr No.</th>
                             <th>Patient ID</th>
-                            <th>Name</th>
-                            <th>Gender</th>
-                            <th>Age</th>
+                            <th>Record Date</th>
+                            <th>Date Generated</th>
                             <th></th>
                         </thead>
                         <tbody>
                         {data.results.map((item,index)=>(
-                            item.patientid !==0 &&<tr key = {item.patientid}>
+                            item.patientid !==0 &&<tr key = {item.id}>
+                                <td>{item.id}</td>
                                 <td>{item.patient_id}</td>
-                                <td>{item.patient_first_name}</td>
-                                <td>{item.gender}</td>
-                                <td>{item.age_in_years}</td>
+                                <td>{item.date}</td>
+                                <td>{(new Date(item.date_created)).toUTCString()}</td>
                                 <td><CustomButton variant='contained'
                                 sx ={{
                                     fontSize:'16px',
                                     padding:'4px 7px'
                                 }}
                                 onClick = {()=>{
-                                    // selectPatient(item.patient_id, item.patient_first_name, item.age_in_years, item.gender)
+                                    navigate('/history/view-note', {state:{item}})
                                 }}
-                                >Select</CustomButton></td>
+                                >View</CustomButton></td>
                             </tr>
                         ))}
                         </tbody>
-                </table>
-                </div>}
+                </table>}
         </div>
     )
 }
