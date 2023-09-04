@@ -67,9 +67,8 @@ class ListSummary(RetrieveAPIView):
     queryset = Demographicsview.objects.all()
 
     def get_serializer_context(self):
-        date = self.kwargs['date']
-        date = datetime.strptime(date, '%Y-%m-%dT%H:%M:%SZ').date()
-        return {'date': date}
+        self.kwargs['date'] = datetime.strptime(self.kwargs['date'], '%Y-%m-%dT%H:%M:%SZ').date()
+        return {'date': self.kwargs['date']}
     
     def get(self, request, *args, **kwargs):
         print(self.request.user.id)
@@ -77,7 +76,7 @@ class ListSummary(RetrieveAPIView):
         clean_response_data(response.data)
         gpt = ChatGPT(json.dumps(response.data))
         response.data['gpt_response'] = gpt.generate_prompt()
-        prompt = Prompts.objects.create(user=self.request.user, prompt=response.data['gpt_response'])
+        prompt = Prompts.objects.create(user=self.request.user, prompt=response.data['gpt_response'], patient_id=self.kwargs['pk'], date=self.kwargs['date'])
         return response
         
 
