@@ -57,7 +57,7 @@ class ListNoteDates(ListAPIView):
     pagination_class = None
 
     def get_queryset(self):
-        print(self.request.user)
+        print(self.request.user.id)
         return Notesview.objects.filter(patient_id=self.kwargs['pk']).only('date')
 
     serializer_class = DateSerializer
@@ -77,7 +77,7 @@ class ListSummary(RetrieveAPIView):
         clean_response_data(response.data)
         gpt = ChatGPT(json.dumps(response.data))
         response.data['gpt_response'] = gpt.generate_prompt()
-        prompt = Prompts.objects.create(user_id=self.request.user.id, prompt=response.data['gpt_response'])
+        prompt = Prompts.objects.create(user=self.request.user, prompt=response.data['gpt_response'])
         return response
         
 

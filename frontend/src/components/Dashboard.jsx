@@ -15,16 +15,26 @@ const Dashboard = () => {
     const [page,setPage] = useState(1)
     const [searchValue, setSearchValue] = useState('')
     useEffect(() => {
+        const config = {
+            "headers":{
+                "Authorization":`JWT ${localStorage.getItem('access')}`
+            }
+        }
         axios
-            .get(`${process.env.REACT_APP_SERVER_URL}/api/patients/`)
+            .get(`${process.env.REACT_APP_SERVER_URL}/api/patients/`,config)
             .then((res) => setData(res.data))
             .catch(err => {
                 setError(err.message);
             });
     }, [])
     useEffect(()=>{
+        const config = {
+            "headers":{
+                "Authorization":`JWT ${localStorage.getItem('access')}`
+            }
+        }
         axios
-            .get(`${process.env.REACT_APP_SERVER_URL}/api/patients/?page=${page}&search=${searchValue}`)
+            .get(`${process.env.REACT_APP_SERVER_URL}/api/patients/?page=${page}&search=${searchValue}`,config)
             .then((res) => setData(res.data))
             .catch(err => {
                 setError(err.message);

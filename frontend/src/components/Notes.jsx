@@ -13,8 +13,13 @@ const Notes = () => {
     const [edit, setEdit] = useState(false)
 
     useEffect(() => {
+        const config = {
+            "headers":{
+                "Authorization":`JWT ${localStorage.getItem('access')}`
+            }
+        }
         axios
-            .get(`${process.env.REACT_APP_SERVER_URL}/api/summary/${pid}/${selectedDate}`)
+            .get(`${process.env.REACT_APP_SERVER_URL}/api/summary/${pid}/${selectedDate}`,config)
             .then((res) => {
                 setData(res.data)
                 console.log(res.data)
@@ -46,15 +51,7 @@ const Notes = () => {
             {!data && !error && <p>Loading, please wait...</p>}
             {data && <div className='iframe' >
                 <h2>Generated Note</h2>
-                {edit? 
-                <div>
-
-                </div> 
-                :<div>
-                    <iframe srcdoc={html} width='100%' height='100%' />
-                    <CustomButton variant = 'contained'>Edit</CustomButton>
-                    </div>}
-                
+                    <iframe srcdoc={data.gpt_response} width='100%' height='100%' />
                 </div>}
 
             {data && showData &&

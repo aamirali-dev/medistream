@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { createContext, useState } from 'react';
+import { createContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 export const MyContext = createContext("");
 const MyProvider = ({ children }) => {
@@ -8,12 +8,11 @@ const MyProvider = ({ children }) => {
   const [age, setAge] = useState(1);
   const happyBirthday = () => setAge(age + 1);
   const [loginError, setLoginError] = useState('')
-  const [loading,setLoading] = useState(false)
+  const [loading, setLoading] = useState(false)
+  const [isAuthenticated, setIsAuthenticated] = useState(()=> localStorage.getItem('access') ? true : false)
 
-  function sleep(time){
-    return new Promise((resolve)=>setTimeout(resolve,time)
-  )
-}
+
+
   const login = async (username, password) => {
     setLoading(true)
     setLoginError('')
@@ -24,9 +23,10 @@ const MyProvider = ({ children }) => {
       const resp = await axios.post(`${process.env.REACT_APP_SERVER_URL}/auth/jwt/create/`, body)
       if (resp.status == 200) {
         setLoading(false)
-        localStorage.setItem("access",resp.data.access)
-        localStorage.setItem("refresh",resp.data.refresh)
+        localStorage.setItem("access", resp.data.access)
+        localStorage.setItem("refresh", resp.data.refresh)
         navigate('/provider_notes')
+        setIsAuthenticated(true)
       }
     }
     catch (e) {
@@ -35,18 +35,33 @@ const MyProvider = ({ children }) => {
       setLoading(false)
     }
   }
+
+  const logout = async () => {
+    setLoading(true)
+    const body = {
+      "refresh": localStorage.getItem('refresh')
+    }
+    try {
+      const resp = await axios.post(`${process.env.REACT_APP_SERVER_URL}/auth/logout/`, body)
+      if (resp.status == 200) {
+        setLoading(false)
+        localStorage.removeItem("access")
+        localStorage.removeItem("refresh")
+        navigate('/login')
+        setIsAuthenticated(false)
+      }
+    }
+    catch (e) {
+      setLoading(false)
+      console.log(e)
+    }
+  }
   return (
-    <MyContext.Provider value={{ name, age, happyBirthday, login,loginError, loading }}>
+    <MyContext.Provider value={{ name, age, happyBirthday, login, loginError, loading, logout, isAuthenticated }}>
       {children}
     </MyContext.Provider>
   );
 };
 
-const withUser = (Child) => (props) => (
-  <MyContext.Consumer>
-    {(context) => <Child {...props} {...context} />}
-    {/* Another option is:  {context => <Child {...props} context={context}/>}*/}
-  </MyContext.Consumer>
-);
 
-export { MyProvider, withUser };
+export { MyProvider };

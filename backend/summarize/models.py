@@ -50,6 +50,6 @@ class UserAccount(AbstractBaseUser, PermissionsMixin):
 
 
 class Prompts(models.Model):
-    user_id = models.ForeignKey(UserAccount, on_delete=models.PROTECT, related_name='prompts')
+    user = models.ForeignKey(UserAccount, on_delete=models.PROTECT, related_name='prompts')
     prompt = models.TextField()
     date_created = models.DateTimeField(auto_now_add=True)
