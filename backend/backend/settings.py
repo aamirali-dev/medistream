@@ -196,8 +196,3 @@ DJOSER = {
 # CORS HEADERS
 CORS_ORIGIN_ALLOW_ALL = True
 CORS_ALLOW_CREDENTIALS = True
-
-# REST_FRAMEWORK = {
-# 	'PAGE_SIZE': 20,
-# 	'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination'
-# }
