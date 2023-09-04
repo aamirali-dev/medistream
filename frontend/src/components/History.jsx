@@ -30,7 +30,7 @@ const History = () => {
                         <thead>
                             <th>Sr No.</th>
                             <th>Patient ID</th>
-                            <th>Name</th>
+                            <th>Record Date</th>
                             <th>Date Generated</th>
                             <th></th>
                         </thead>
@@ -39,7 +39,7 @@ const History = () => {
                             item.patientid !==0 &&<tr key = {item.id}>
                                 <td>{item.id}</td>
                                 <td>{item.patient_id}</td>
-                                <td>{item.patient_first_name}</td>
+                                <td>{item.date}</td>
                                 <td>{(new Date(item.date_created)).toUTCString()}</td>
                                 <td><CustomButton variant='contained'
                                 sx ={{

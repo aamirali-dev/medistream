@@ -14,6 +14,7 @@ import History from './components/History';
 import DateSelection from './components/DateSelection';
 import Notes from './components/Notes';
 import ViewNote from './components/ViewNote';
+import NotFound from './components/NotFound';
 
 function App() {  
   const {isAuthenticated} = useContext(MyContext)
@@ -35,6 +36,7 @@ function App() {
               <Route path = '/provider_notes/notes' element = {<Notes />} /> 
               <Route path = '/history/view-note' element = {<ViewNote />} /> 
             </Route>
+            <Route path = "*" element = {<NotFound />} />
           </Routes>
         </MyProvider>
         </BrowserRouter>

@@ -52,6 +52,6 @@ class UserAccount(AbstractBaseUser, PermissionsMixin):
 class Prompts(models.Model):
     user = models.ForeignKey(UserAccount, on_delete=models.PROTECT, related_name='prompts')
     prompt = models.TextField()
-    patient_id = models.IntegerField()
-    date = models.DateField()
+    patient_id = models.IntegerField(default=7273)
+    date = models.DateField(default = None)
     date_created = models.DateTimeField(auto_now_add=True)
