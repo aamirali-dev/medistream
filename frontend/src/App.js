@@ -1,11 +1,11 @@
-import { useState,useEffect } from 'react';
+import { useState,useEffect, useContext } from 'react';
 import './App.css';
 import theme from './theme';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Home from './components/Home';
 import Login from './components/Login';
 import { ThemeProvider } from '@emotion/react';
-import { MyProvider } from './Context';
+import { MyContext, MyProvider } from './Context';
 import Dashboard from './components/Dashboard';
 import PrivateRoute from './PrivateRoutes';
 import Navbar from './components/Navbar';
@@ -14,14 +14,15 @@ import History from './components/History';
 import DateSelection from './components/DateSelection';
 import Notes from './components/Notes';
 
-function App() {
-
+function App() {  
+  const {isAuthenticated} = useContext(MyContext)
+  console.log(isAuthenticated)
   return (
     <div className="App">
       <ThemeProvider theme={theme}>
         <BrowserRouter>
-      {localStorage.getItem('access')?<Navbar/> :null}
         <MyProvider>
+          <Navbar />
           <Routes>
             <Route exact path='/' element={<Home />} />
             <Route exact path='/login' element={<Login />} />
