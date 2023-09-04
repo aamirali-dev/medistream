@@ -1,40 +1,27 @@
 from datetime import datetime
-from django.db.models import Count, F, DateTimeField, CharField, Max
+from django.db.models import Count, F, DateTimeField, Max
 from django.db.models.functions import Cast
 from rest_framework.filters import SearchFilter
 from rest_framework.generics import ListAPIView, RetrieveAPIView
 from django_filters.rest_framework import DjangoFilterBackend
 
-from .serializers import DiagnosisSerializer, PatientSerializer, \
-    PatientSerializerFromNotes, AllPatientDemographicsSerializer, ProviderNoteSerializer, DateSerializer
-from .models import Diagnosisview, Demographicsview, Notesview
+from .serializers import PatientSerializer, AllPatientDemographicsSerializer, DateSerializer
+from .models import Demographicsview, Notesview
 from .utils import clean_response_data
 from .gpt import ChatGPT
 from summarize.models import Prompts
 
 import json
 
-class ListDiagnosis(ListAPIView):
-    queryset = Diagnosisview.objects.all()
-    serializer_class = DiagnosisSerializer
+
 
 
 class ListPatients(ListAPIView):
-    filter_backends = [DjangoFilterBackend, SearchFilter]
-    search_fields = ['patient_first_name']
-    queryset = Demographicsview.objects \
-        .only('patientid', 'gender', 'age_in_years', ) \
-        .annotate(patient_first_name=F('diagnosis__patient_first_name')) \
-        .annotate(dcount=Count('diagnosis__patient_first_name')) \
-        .annotate(last_visit_date=Max(Cast('notes__date', output_field=DateTimeField()))) \
-        .order_by('patientid')
-    serializer_class = PatientSerializer
+    """
+    Returns the list of patients, accepts search by patient first name
+    Properties Included: patient_id, patient_first_name, last_visit_date, gender, age_in_years
+    """
 
-#########################################################
-# Get all unique Patient IDs from Provider Notes Table #
-#########################################################
-
-class ListPatientsFromNotes(ListAPIView):
     filter_backends = [DjangoFilterBackend, SearchFilter]
     search_fields = ['patient_first_name']
     queryset = Notesview.objects.only('patient_id', 'patient_first_name') \
@@ -43,28 +30,32 @@ class ListPatientsFromNotes(ListAPIView):
         .annotate(gender=F('patient_id__gender')) \
         .annotate(age_in_years=F('patient_id__age_in_years')) \
         .annotate(last_visit_date=Max(Cast('date', output_field=DateTimeField())))
-    serializer_class = PatientSerializerFromNotes
-
-
-class ListNotes(ListAPIView):
-    def get_queryset(self):
-        return Notesview.objects.filter(patient_id=self.kwargs['pk'])
-
-    serializer_class = ProviderNoteSerializer
+    serializer_class = PatientSerializer
 
 
 class ListNoteDates(ListAPIView):
+    """
+    Return list of dates for which notes has been taken for the particular patient id
+    """
+
     pagination_class = None
+    serializer_class = DateSerializer
 
     def get_queryset(self):
-        print(self.request.user.id)
         return Notesview.objects.filter(patient_id=self.kwargs['pk']).only('date')
-
-    serializer_class = DateSerializer
 
 
 class ListSummary(RetrieveAPIView):
+    """
+    This api performs the following functions
+    Step 1: fetch all the data related to a particular patient based on the date selected
+    Step 2: send data to chatgpt to generate notes
+    Step 3: saves the call in prompts history
+    Note: data returned by chatgpt is available in response.data['gpt_response]
+    """
+
     queryset = Demographicsview.objects.all()
+    serializer_class = AllPatientDemographicsSerializer
 
     def get_serializer_context(self):
         self.kwargs['date'] = datetime.strptime(self.kwargs['date'], '%Y-%m-%dT%H:%M:%SZ').date()
@@ -78,6 +69,3 @@ class ListSummary(RetrieveAPIView):
         response.data['gpt_response'] = gpt.generate_prompt()
         prompt = Prompts.objects.create(user=self.request.user, prompt=response.data['gpt_response'], patient_id=self.kwargs['pk'], date=self.kwargs['date'])
         return response
-        
-
-    serializer_class = AllPatientDemographicsSerializer

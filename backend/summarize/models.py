@@ -50,6 +50,11 @@ class UserAccount(AbstractBaseUser, PermissionsMixin):
 
 
 class Prompts(models.Model):
+    """
+    Prompts model to store history of prompts issued by user
+    It includes: user, summary returned by chatgpt, patient id, date, and finally the current date which is automatically populated
+    """
+
     user = models.ForeignKey(UserAccount, on_delete=models.PROTECT, related_name='prompts')
     prompt = models.TextField()
     patient_id = models.IntegerField()
