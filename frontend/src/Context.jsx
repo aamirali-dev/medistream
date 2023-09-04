@@ -9,8 +9,12 @@ const MyProvider = ({ children }) => {
   const happyBirthday = () => setAge(age + 1);
   const [loginError, setLoginError] = useState('')
   const [loading, setLoading] = useState(false)
-  const [isAuthenticated, setIsAuthenticated] = useState(()=> localStorage.getItem('access') ? true : false)
+  const [isAuthenticated, setIsAuthenticated] = useState(()=> localStorage.getItem('accesss') ? JSON.parse(localStorage.getItem('authTokens')) : null)
 
+  useEffect(()=>{
+    if(localStorage.getItem('access')) setIsAuthenticated(true)
+    else setIsAuthenticated(false)
+  },[])
 
 
   const login = async (username, password) => {

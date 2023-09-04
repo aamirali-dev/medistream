@@ -17,8 +17,6 @@ import ViewNote from './components/ViewNote';
 import NotFound from './components/NotFound';
 
 function App() {  
-  const {isAuthenticated} = useContext(MyContext)
-  console.log(isAuthenticated)
   return (
     <div className="App">
       <ThemeProvider theme={theme}>
