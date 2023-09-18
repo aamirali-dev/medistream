@@ -102,7 +102,7 @@ DATABASES = {
         'NAME': 'clinical_documentation',
         'USER': 'root',
         'PASSWORD': DB_PASSWORD,
-        'HOST': 'localhost',
+        'HOST': '172.16.103.199',
         'PORT': '3306',
     },
     'datalake': {

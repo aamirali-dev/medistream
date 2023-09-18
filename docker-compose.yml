@@ -1,0 +1,36 @@
+version: '3'
+services:
+  # MySQL database service
+  mysql:
+    image: mysql:5.7
+    container_name: mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: clinical_documentation
+    ports:
+      - "3306:3306"  # Expose MySQL port for local access
+
+  # Django backend service
+  backend:
+    build:
+      context: ./backend
+    container_name: backend
+    depends_on:
+      - mysql
+    environment:
+      DB_HOST: mysql  # Use the service name defined above for the MySQL host
+      DB_NAME: clinical_documentation
+      DB_USER: root
+      DB_PASSWORD: root
+    ports:
+      - "8000:8000"  # Expose Django app port
+
+  # React frontend service
+  frontend:
+    build:
+      context: ./frontend
+    container_name: frontend
+    ports:
+      - "3000:3000"  # Expose React app port
+    environment:
+      REACT_APP_BACKEND_URL: http://backend:8000  # Use the service name for the backend
