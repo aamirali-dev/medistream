@@ -14,6 +14,7 @@ from datetime import timedelta
 from pathlib import Path
 from dotenv import load_dotenv
 from os.path import join
+import dj_database_url
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -97,14 +98,7 @@ DATABASE_ROUTERS = ['datalake.routers.LakeRouter', 'backend.routers.DefaultRoute
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'clinical_documentation',
-        'USER': 'root',
-        'PASSWORD': DB_PASSWORD,
-        'HOST': '172.16.103.199',
-        'PORT': '3306',
-    },
+    'default': dj_database_url.config(),
     'datalake': {
         'ENGINE': 'mssql',
         'NAME': 'One Practice Sample',
@@ -116,6 +110,8 @@ DATABASES = {
         },
     }
 }
+
+print(f"database url recieved is {DATABASES['default']}")
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators

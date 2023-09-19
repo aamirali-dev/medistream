@@ -15,6 +15,7 @@ django-filter = "*"
 django-debug-toolbar = "*"
 openai = "*"
 py2puml = "*"
+dj-database-url = "*"
 
 [dev-packages]
 

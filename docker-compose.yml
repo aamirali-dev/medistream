@@ -18,10 +18,11 @@ services:
     depends_on:
       - mysql
     environment:
-      DB_HOST: mysql  # Use the service name defined above for the MySQL host
-      DB_NAME: clinical_documentation
-      DB_USER: root
-      DB_PASSWORD: root
+      DATABASE_URL: mysql://root:root@mysql:3306/clinical_documentation
+      # DB_HOST: mysql  # Use the service name defined above for the MySQL host
+      # DB_NAME: clinical_documentation
+      # DB_USER: root
+      # DB_PASSWORD: root
     ports:
       - "8000:8000"  # Expose Django app port
 
